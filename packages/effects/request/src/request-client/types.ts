@@ -65,6 +65,7 @@ interface HttpResponse<T = any> {
    * 0 means success, others means fail
    */
   code: number;
+  state: boolean;
   data: T;
   message: string;
 }

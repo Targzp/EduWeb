@@ -7,29 +7,42 @@ type SelectOption = BasicOption;
 
 type TabOption = BasicOption;
 
+type RoleId = 0 | 1;
+
 interface BasicUserInfo {
   /**
-   * 头像
+   * 用户名称
    */
-  avatar: string;
-  /**
-   * 用户昵称
-   */
-  realName: string;
-  /**
-   * 用户角色
-   */
-  roles?: string[];
+  account: string;
   /**
    * 用户id
    */
-  userId: string;
+  id: number;
   /**
-   * 用户名
+   * 邮箱
    */
-  username: string;
+  mail: string;
+  /**
+   * 手机号
+   */
+  phone: string;
+  /**
+   * 用户角色
+   */
+  role: string;
+  /**
+   * 用户角色id
+   */
+  roleId: RoleId;
 }
 
 type ClassType = Array<object | string> | object | string;
 
-export type { BasicOption, BasicUserInfo, ClassType, SelectOption, TabOption };
+export type {
+  BasicOption,
+  BasicUserInfo,
+  ClassType,
+  RoleId,
+  SelectOption,
+  TabOption,
+};

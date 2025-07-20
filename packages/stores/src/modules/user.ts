@@ -1,27 +1,33 @@
+import type { RoleId } from '@vben-core/typings';
+
 import { acceptHMRUpdate, defineStore } from 'pinia';
 
 interface BasicUserInfo {
   [key: string]: any;
   /**
-   * 头像
+   * 用户名称
    */
-  avatar: string;
-  /**
-   * 用户昵称
-   */
-  realName: string;
-  /**
-   * 用户角色
-   */
-  roles?: string[];
+  account: string;
   /**
    * 用户id
    */
-  userId: string;
+  id: number;
   /**
-   * 用户名
+   * 邮箱
    */
-  username: string;
+  mail: string;
+  /**
+   * 手机号
+   */
+  phone: string;
+  /**
+   * 用户角色
+   */
+  role: string;
+  /**
+   * 用户角色id
+   */
+  roleId: RoleId;
 }
 
 interface AccessState {
@@ -32,7 +38,7 @@ interface AccessState {
   /**
    * 用户角色
    */
-  userRoles: string[];
+  userRole: string;
 }
 
 /**
@@ -44,16 +50,16 @@ export const useUserStore = defineStore('core-user', {
       // 设置用户信息
       this.userInfo = userInfo;
       // 设置角色信息
-      const roles = userInfo?.roles ?? [];
-      this.setUserRoles(roles);
+      const role = userInfo?.role ?? '';
+      this.setUserRoles(role);
     },
-    setUserRoles(roles: string[]) {
-      this.userRoles = roles;
+    setUserRoles(role: string) {
+      this.userRole = role;
     },
   },
   state: (): AccessState => ({
     userInfo: null,
-    userRoles: [],
+    userRole: '',
   }),
 });
 

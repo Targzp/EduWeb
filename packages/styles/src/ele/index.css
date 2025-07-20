@@ -2,6 +2,11 @@
   --el-card-border-radius: var(--radius) !important;
 }
 
+/* el-table 表头样式 */
+.tableHeader {
+  background-color: var(--el-fill-color-light) !important;
+}
+
 .form-valid-error {
   /** select 选择器的样式 */
   .el-select .el-select__wrapper {
@@ -41,4 +46,17 @@
 
 html .el-loading-mask {
   z-index: 1000;
+}
+
+:root {
+  /* 基础圆角（影响大部分组件） */
+  --el-border-radius-base: 4px !important; /* 默认4px */
+
+  /* 特定组件圆角 */
+
+  /* --el-button-border-radius: 8px;
+  --el-card-border-radius: 16px;
+  --el-dialog-border-radius: 20px;
+  --el-input-border-radius: 6px;
+  --el-tag-border-radius: 4px; */
 }
