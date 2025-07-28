@@ -22,4 +22,8 @@ interface ExchangeRowType {
   id2: number;
 }
 
-export type { ExchangeRowType, PageListType, PageQueryParams };
+type PartialByKey<T, K extends keyof T> = Omit<T, K> & {
+  [P in K]?: T[P];
+};
+
+export type { ExchangeRowType, PageListType, PageQueryParams, PartialByKey };
