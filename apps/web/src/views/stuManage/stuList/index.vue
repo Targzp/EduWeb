@@ -359,11 +359,7 @@ onMounted(() => {
             }}
           </template>
         </ElTableColumn>
-        <ElTableColumn
-          prop="courseOrders"
-          label="报读课程(未结课的)"
-          show-overflow-tooltip
-        >
+        <ElTableColumn prop="courseOrders" label="报读课程(未结课的)">
           <template #default="{ row }">
             {{ formatCourseList(row.courseOrders) }}
           </template>

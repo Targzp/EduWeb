@@ -1,6 +1,9 @@
 export type * from './common';
 export type * from './course-list';
 export type * from './roles';
+export type * from './scheduling-center';
 export type * from './stu-list';
+export type * from './stu-transfer-application';
 export type * from './teacher-list';
+export type * from './timetable-template';
 export type * from './users';

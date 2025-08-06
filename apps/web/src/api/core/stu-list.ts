@@ -24,6 +24,20 @@ export async function getStudentListApi(paramsData: StudentQueryParams) {
 }
 
 /**
+ * 获取全部学生
+ */
+export async function getAllStudentListApi() {
+  return requestClient.get<StuItemInfo[]>(`/student/getall`);
+}
+
+/**
+ * 根据课程Id获取学生列表
+ */
+export async function getStudentListByCourseApi(courseIds: number[]) {
+  return requestClient.post<StuItemInfo[]>(`/student/querybycourse`, courseIds);
+}
+
+/**
  * 注册学生
  */
 export async function createStudentApi(paramsData: StudentRegisterParams) {
