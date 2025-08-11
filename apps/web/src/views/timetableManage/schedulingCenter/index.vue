@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { nextTick, onMounted, reactive, ref, useTemplateRef, watch } from 'vue';
 
+import { useAccess } from '@vben/access';
 import { EllipsisText } from '@vben/common-ui';
 
 import { CalendarApi, CalendarOptions } from '@fullcalendar/core';
@@ -51,6 +52,8 @@ const weekObj: Record<number, string> = {
   5: '周五',
   6: '周六',
 };
+
+const { hasAccessByCodes } = useAccess();
 
 const courseList = ref<CourseItemInfo[]>([]);
 const teacherList = ref<TeacherItemInfo[]>([]);
@@ -168,6 +171,7 @@ const handlaDateClick = (date: Date) => {
       scheduleDialogMode.value = 'view';
       scheduleDialogEditFlag.value = false;
     } else {
+      if (!hasAccessByCodes(['SCH-002'])) return;
       scheduleDialogMode.value = 'date';
       scheduleDialogEditFlag.value = true;
     }
@@ -176,6 +180,7 @@ const handlaDateClick = (date: Date) => {
       courseScheduleData.value[dayjs(date).format('YYYY-MM-DD')]!;
     scheduleDialogVisible.value = true;
   } else {
+    if (!hasAccessByCodes(['SCH-001'])) return;
     if (dayjs(date).isBefore(dayjs().startOf('day'))) return;
     if (isQueryMode.value) return;
     scheduleDialogDate.value = date;
@@ -344,6 +349,7 @@ onMounted(() => {
                 class="!w-[250px]"
                 multiple
                 clearable
+                filterable
                 collapse-tags
                 collapse-tags-tooltip
                 placeholder="请选择学生"
@@ -362,6 +368,7 @@ onMounted(() => {
                 class="!w-[250px]"
                 multiple
                 clearable
+                filterable
                 collapse-tags
                 collapse-tags-tooltip
                 placeholder="请选择教师"
@@ -380,6 +387,7 @@ onMounted(() => {
                 class="!w-[250px]"
                 multiple
                 clearable
+                filterable
                 collapse-tags
                 collapse-tags-tooltip
                 placeholder="请选择课程"
@@ -406,6 +414,7 @@ onMounted(() => {
       </ElForm>
       <div v-else class="flex w-full items-center justify-end">
         <ElButton
+          v-access:code="'SCH-004'"
           type="primary"
           class="!h-10 w-24"
           @click="clearScheduleDialogVisible = true"
@@ -413,6 +422,7 @@ onMounted(() => {
           一键清除
         </ElButton>
         <ElButton
+          v-access:code="'SCH-005'"
           type="primary"
           class="!h-10 w-24"
           @click="handleBatchCourseSchedule"
@@ -420,6 +430,7 @@ onMounted(() => {
           批量排课
         </ElButton>
         <ElButton
+          v-access:code="'SCH-006'"
           type="primary"
           class="!h-10 w-24"
           @click="templateApplyDialogVisible = true"
@@ -433,6 +444,9 @@ onMounted(() => {
           @click="handleChangeMode"
         ></span>
       </ElTooltip>
+      <span class="w-[75px] font-bold text-[hsl(var(--primary))]">{{
+        isQueryMode ? '查询模式' : '排课模式'
+      }}</span>
     </div>
     <div
       class="mt-2 flex-1 overflow-hidden rounded-[4px] bg-[hsl(var(--background))]"
@@ -479,6 +493,7 @@ onMounted(() => {
                       showScheduleDeleteFlag ===
                       dayjs(arg.date).format('YYYY-MM-DD')
                     "
+                    v-access:code="'SCH-003'"
                     class="z-10000 icon-[ep--delete] absolute top-3 h-[18px] w-[18px] cursor-pointer bg-[hsl(var(--destructive))]"
                     @click.stop="handleDeleteDateSchedule(arg.date)"
                   ></span>

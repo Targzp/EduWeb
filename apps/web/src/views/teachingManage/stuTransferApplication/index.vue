@@ -175,9 +175,7 @@ onMounted(() => {
 
 <template>
   <div class="flex h-full flex-col overflow-hidden p-4">
-    <div
-      class="mt-2 h-[56px] w-full rounded-[4px] bg-[hsl(var(--background))] p-2"
-    >
+    <div class="h-[56px] w-full rounded-[4px] bg-[hsl(var(--background))] p-2">
       <ElForm :model="formData" class="mt-[4px]" inline>
         <div class="flex w-full justify-between">
           <div>
@@ -302,13 +300,19 @@ onMounted(() => {
             <template v-if="row.approvalStatus !== 2">
               <ElButton
                 v-if="row.approvalStatus === 0"
+                v-access:code="'APP-001'"
                 type="primary"
                 link
                 @click="handleApproval(row)"
               >
                 审批
               </ElButton>
-              <ElButton type="danger" link @click="handleDelete(row)">
+              <ElButton
+                v-access:code="'APP-002'"
+                type="danger"
+                link
+                @click="handleDelete(row)"
+              >
                 删除
               </ElButton>
             </template>

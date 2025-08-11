@@ -25,9 +25,9 @@
 }
 
 .fc-daygrid-day-number {
-  width: 100%;
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .fc-scrollgrid-sync-inner {
@@ -41,6 +41,18 @@
 
 .fc-daygrid-day-events {
   min-height: 0 !important;
+}
+
+.custom-segmented .el-segmented {
+  --el-segmented-item-selected-bg-color: hsl(var(--primary));
+  --el-border-radius-base: 4px;
+}
+
+.custom-segmented .el-segmented__item {
+  width: 100px;
+  height: 40px;
+  line-height: 40px;
+  background-color: hsl(var(--background));
 }
 
 .form-valid-error {

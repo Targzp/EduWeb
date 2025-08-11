@@ -423,7 +423,7 @@ onMounted(() => {
   <ElDialog
     v-model="dialogVisible"
     width="800"
-    title="创建模板"
+    :title="props.editFlag ? '更新模板' : '创建模板'"
     :show-close="false"
     :draggable="true"
     :close-on-click-modal="false"

@@ -3,7 +3,7 @@ import type { RouteRecordRaw } from 'vue-router';
 const routes: RouteRecordRaw[] = [
   {
     meta: {
-      icon: 'lucide:layout-dashboard',
+      icon: 'lucide:graduation-cap',
       order: 1,
       title: '学生管理',
     },

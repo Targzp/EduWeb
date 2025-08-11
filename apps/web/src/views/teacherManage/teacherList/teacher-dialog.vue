@@ -14,11 +14,16 @@ import {
   ElFormItem,
   ElInput,
   ElMessage,
+  ElMessageBox,
   ElOption,
   ElSelect,
 } from 'element-plus';
 
-import { createTeacherApi, updateTeacherApi } from '#/api/core/teacher-list';
+import {
+  createTeacherApi,
+  getTeacherScheduledCourseApi,
+  updateTeacherApi,
+} from '#/api';
 import { phoneValidator } from '#/utils';
 
 const props = defineProps<{
@@ -88,6 +93,18 @@ const rules = {
   ],
 };
 
+const getScheduledCourse = async () => {
+  try {
+    let scheduledCourseIds = [];
+    const id = props.editData!.id;
+    const res = await getTeacherScheduledCourseApi(id);
+    scheduledCourseIds = res;
+    return scheduledCourseIds;
+  } catch (error) {
+    console.error('获取教师待上排课课程失败:', error);
+  }
+};
+
 const handleConfirm = () => {
   formRef.value?.validate(async (valid) => {
     if (valid) {
@@ -96,29 +113,54 @@ const handleConfirm = () => {
         const params = {
           ...formData.value,
         } as TeacherItemCeParams;
+        let res = null;
         if (props.editFlag) {
-          // TODO 若教师有更改前的课程排课，点击保存时进行二次确认
-          params.id = props.editData?.id;
-          const res = await updateTeacherApi(params);
-          if (res) {
-            ElMessage({
-              message: '编辑成功',
-              type: 'success',
+          params.id = props.editData!.id;
+          // 若教师有更改前的课程排课，点击保存时进行二次确认
+          const scheduledCourseIds = await getScheduledCourse();
+          if (
+            scheduledCourseIds &&
+            scheduledCourseIds.some(
+              (courseId) => !params.courseIds.includes(courseId),
+            )
+          ) {
+            await ElMessageBox.confirm(
+              '教师更改或删除的课程中有待上的排课，是否继续更新？若继续，则会删除对应课程排课',
+              '确认更新',
+              {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+              },
+            ).then(async () => {
+              res = await updateTeacherApi(params);
+              if (res) {
+                ElMessage({
+                  message: '编辑成功',
+                  type: 'success',
+                });
+              }
             });
-            dialogVisible.value = false;
-            emit('submitSuccess');
+          } else {
+            res = await updateTeacherApi(params);
+            if (res) {
+              ElMessage({
+                message: '编辑成功',
+                type: 'success',
+              });
+            }
           }
         } else {
-          const res = await createTeacherApi(params);
+          res = await createTeacherApi(params);
           if (res) {
             ElMessage({
               message: '注册成功',
               type: 'success',
             });
-            dialogVisible.value = false;
-            emit('submitSuccess');
           }
         }
+        dialogVisible.value = false;
+        emit('submitSuccess');
       } catch (error) {
         console.error('注册/编辑教师失败:', error);
       } finally {

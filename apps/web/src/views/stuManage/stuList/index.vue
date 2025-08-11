@@ -246,6 +246,7 @@ onMounted(() => {
   <div class="flex h-full flex-col overflow-hidden p-4">
     <div class="flex justify-end">
       <ElButton
+        v-access:code="'STU-001'"
         type="primary"
         class="!h-10 w-24"
         @click="handleRegisterStudent"
@@ -253,6 +254,7 @@ onMounted(() => {
         注册学生
       </ElButton>
       <ElButton
+        v-access:code="'STU-003'"
         type="primary"
         :disabled="multipleStudentData.length === 0"
         plain
@@ -262,6 +264,7 @@ onMounted(() => {
         归档
       </ElButton>
       <ElButton
+        v-access:code="'STU-004'"
         type="primary"
         :disabled="multipleStudentData.length === 0"
         plain
@@ -380,18 +383,29 @@ onMounted(() => {
         </ElTableColumn>
         <ElTableColumn prop="action" label="操作栏" align="center" width="210">
           <template #default="{ row }">
-            <ElButton type="primary" link @click="handleEditStudent(row)">
+            <ElButton
+              v-access:code="'STU-002'"
+              type="primary"
+              link
+              @click="handleEditStudent(row)"
+            >
               编辑
             </ElButton>
             <ElButton
               v-if="!row.canShedule"
+              v-access:code="'STU-003'"
               type="warning"
               link
               @click="handleCancelArchive(row)"
             >
               取消归档
             </ElButton>
-            <ElButton type="success" link @click="handleStuCourse(row)">
+            <ElButton
+              v-access:code="'STU-005'"
+              type="success"
+              link
+              @click="handleStuCourse(row)"
+            >
               报课管理
             </ElButton>
           </template>

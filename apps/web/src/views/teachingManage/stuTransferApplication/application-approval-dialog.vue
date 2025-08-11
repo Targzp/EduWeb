@@ -171,7 +171,7 @@ const handleClose = () => {
     @close="handleClose"
   >
     <div class="px-5">
-      <ElDescriptions :column="1" border label-width="150" w>
+      <ElDescriptions :column="1" border label-width="150">
         <ElDescriptionsItem label="申请学生" label-align="right">
           {{ transferApplicationApprovalData?.stuName ?? '--' }}
         </ElDescriptionsItem>

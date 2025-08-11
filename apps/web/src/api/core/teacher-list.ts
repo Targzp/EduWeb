@@ -34,6 +34,15 @@ export async function getTeacherListByCourseApi(courseId: number) {
 }
 
 /**
+ * 获取教师所有待上排课的课程
+ */
+export async function getTeacherScheduledCourseApi(id: number) {
+  return requestClient.get<number[]>(
+    `/teacher/getteacherscheduledcourse?id=${id}`,
+  );
+}
+
+/**
  * 注册教师
  */
 export async function createTeacherApi(paramsData: TeacherItemCeParams) {

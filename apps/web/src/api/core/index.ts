@@ -1,4 +1,5 @@
 export * from './auth';
+export * from './class-records';
 export * from './course-list';
 export * from './menu';
 export * from './scheduling-center';

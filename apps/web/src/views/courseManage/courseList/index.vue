@@ -53,15 +53,14 @@ const handleEditCourse = (row: CourseItemInfo) => {
   courseDialogVisible.value = true;
 };
 
-const handleDelete = async (id: string) => {
-  // TODO 此处需进行课程是否已排课判断
+const handleDelete = async (id: number) => {
   ElMessageBox.confirm('确定删除该课程吗？', '删除课程', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning',
   }).then(async () => {
     try {
-      const res = await deleteCourseApi(id);
+      const res = await deleteCourseApi([id]);
       if (res) {
         ElMessage({
           message: '删除成功',
@@ -117,7 +116,12 @@ onMounted(() => {
 <template>
   <div class="flex h-full flex-col overflow-hidden p-4">
     <div class="flex justify-end">
-      <ElButton type="primary" class="!h-10 w-24" @click="handleCreateCourse">
+      <ElButton
+        v-access:code="'COU-001'"
+        type="primary"
+        class="!h-10 w-24"
+        @click="handleCreateCourse"
+      >
         创建课程
       </ElButton>
     </div>
@@ -147,14 +151,25 @@ onMounted(() => {
         />
         <ElTableColumn prop="action" label="操作栏" align="center" width="200">
           <template #default="{ row, $index }">
-            <ElButton type="primary" link @click="handleEditCourse(row)">
+            <ElButton
+              v-access:code="'COU-002'"
+              type="primary"
+              link
+              @click="handleEditCourse(row)"
+            >
               编辑
             </ElButton>
-            <ElButton type="danger" link @click="handleDelete(row.id)">
+            <ElButton
+              v-access:code="'COU-003'"
+              type="danger"
+              link
+              @click="handleDelete(row.id)"
+            >
               删除
             </ElButton>
             <ElButton
               v-if="$index !== 0"
+              v-access:code="'COU-004'"
               type="success"
               link
               @click="handleMoveCourse($index, 'up')"
@@ -163,6 +178,7 @@ onMounted(() => {
             </ElButton>
             <ElButton
               v-if="$index !== tableData.length - 1"
+              v-access:code="'COU-004'"
               type="success"
               link
               @click="handleMoveCourse($index, 'down')"

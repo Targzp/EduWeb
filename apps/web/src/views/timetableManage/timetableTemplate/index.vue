@@ -81,6 +81,7 @@ onMounted(() => {
   <div class="flex h-full flex-col overflow-hidden p-4">
     <div class="flex justify-end">
       <ElButton
+        v-access:code="'TPL-001'"
         type="primary"
         class="!h-10 w-24"
         @click="handleAddTimetableTemplate"
@@ -119,6 +120,7 @@ onMounted(() => {
         <ElTableColumn prop="action" label="操作栏" align="center" width="120">
           <template #default="{ row }">
             <ElButton
+              v-access:code="'TPL-002'"
               type="primary"
               link
               @click="handleEditTimetableTemplate(row)"
@@ -126,6 +128,7 @@ onMounted(() => {
               编辑
             </ElButton>
             <ElButton
+              v-access:code="'TPL-003'"
               type="danger"
               link
               @click="handleDeleteTimetableTemplate(row.id)"

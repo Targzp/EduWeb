@@ -141,10 +141,16 @@ onMounted(() => {
 <template>
   <div class="flex h-full flex-col overflow-hidden p-4">
     <div class="flex justify-end">
-      <ElButton type="primary" class="!h-10 w-24" @click="handleCreateTeacher">
+      <ElButton
+        v-access:code="'TEA-001'"
+        type="primary"
+        class="!h-10 w-24"
+        @click="handleCreateTeacher"
+      >
         注册教师
       </ElButton>
       <ElButton
+        v-access:code="'TEA-003'"
         type="primary"
         plain
         :disabled="multipleTeacherData.length === 0"
@@ -238,7 +244,12 @@ onMounted(() => {
           height="100%"
         >
           <template #default="{ row }">
-            <ElButton type="primary" link @click="handleEditTeacher(row)">
+            <ElButton
+              v-access:code="'TEA-002'"
+              type="primary"
+              link
+              @click="handleEditTeacher(row)"
+            >
               编辑
             </ElButton>
           </template>

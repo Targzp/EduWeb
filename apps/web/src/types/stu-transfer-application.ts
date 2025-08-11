@@ -1,3 +1,5 @@
+import type { PageQueryParams } from './common';
+
 enum ApprovalStatus {
   Approved = 2, // 通过
   Pending = 0, // 未审批
@@ -32,7 +34,7 @@ interface TransferApplicationItem {
 /**
  * 申请调课列表查询参数
  */
-interface TransferApplicationQueryParams {
+interface TransferApplicationQueryParams extends PageQueryParams {
   stuIds: number[];
   startDate: null | string;
   endDate: null | string;
