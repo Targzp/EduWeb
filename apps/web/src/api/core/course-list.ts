@@ -30,8 +30,8 @@ export async function updateCourseApi(paramsData: CourseItemCeParams) {
 /**
  * 删除课程
  */
-export async function deleteCourseApi(id: string) {
-  return requestClient.delete(`/course/delete?id=${id}`);
+export async function deleteCourseApi(ids: number[]) {
+  return requestClient.delete(`/course/delete`, ids);
 }
 
 /**

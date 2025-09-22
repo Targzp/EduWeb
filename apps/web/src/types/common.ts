@@ -1,3 +1,8 @@
+enum WebSocketTypeCode {
+  /** 调课申请通知 */
+  TransferApply = 101,
+}
+
 /**
  * 分页查询参数
  */
@@ -22,4 +27,21 @@ interface ExchangeRowType {
   id2: number;
 }
 
-export type { ExchangeRowType, PageListType, PageQueryParams };
+type PartialByKey<T, K extends keyof T> = Omit<T, K> & {
+  [P in K]?: T[P];
+};
+
+interface WebSocketData {
+  code: WebSocketTypeCode;
+  data: any;
+}
+
+export type {
+  ExchangeRowType,
+  PageListType,
+  PageQueryParams,
+  PartialByKey,
+  WebSocketData,
+};
+
+export { WebSocketTypeCode };

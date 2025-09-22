@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import type { NotificationItem } from '@vben/layouts';
 
-import { computed, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 import { AuthenticationLoginExpiredModal } from '@vben/common-ui';
-import { useWatermark } from '@vben/hooks';
+import { useTabs, useWatermark } from '@vben/hooks';
 import {
   BasicLayout,
   LockScreen,
@@ -14,18 +15,20 @@ import {
 import { preferences } from '@vben/preferences';
 import { useAccessStore, useUserStore } from '@vben/stores';
 
+import { useWebSocket } from '@vueuse/core';
+import dayjs from 'dayjs';
+
 import { useAuthStore } from '#/store';
+import { TransferApplicationItem, WebSocketData } from '#/types';
+import { WebSocketTypeCode } from '#/types/common';
 import LoginForm from '#/views/_core/authentication/login.vue';
 
-const notifications = ref<NotificationItem[]>([
-  // {
-  //   avatar: 'https://avatar.vercel.sh/vercel.svg?text=VB',
-  //   date: '3小时前',
-  //   isRead: true,
-  //   message: '描述信息描述信息描述信息',
-  //   title: '收到了 14 份新周报',
-  // },
-]);
+const route = useRoute();
+const router = useRouter();
+
+const { refreshTab } = useTabs();
+
+const notifications = ref<NotificationItem[]>([]);
 
 const userStore = useUserStore();
 const authStore = useAuthStore();
@@ -50,6 +53,42 @@ function handleNoticeClear() {
 function handleMakeAll() {
   notifications.value.forEach((item) => (item.isRead = true));
 }
+
+function handleRead(item: NotificationItem) {
+  item.isRead = true;
+  if (item.type === 'Transfer') {
+    if (route.name === 'StuTransferApplication') {
+      refreshTab();
+    } else {
+      router.push({
+        name: 'StuTransferApplication',
+      });
+    }
+  }
+}
+
+const { data, close } = useWebSocket(
+  `${import.meta.env.VITE_WEBSOCKET_URL}?userId=${userStore.userInfo?.id}`,
+  // 配置选项
+  {
+    autoReconnect: false,
+  },
+);
+
+watch(data, (data) => {
+  const wsData = JSON.parse(data) as WebSocketData;
+  if (wsData && wsData.code === WebSocketTypeCode.TransferApply) {
+    const applyData = wsData.data as TransferApplicationItem;
+    notifications.value.push({
+      date: dayjs().format('YYYY-MM-DD HH:mm'),
+      isRead: false,
+      message: '',
+      title: `收到了来自${applyData.stuName}的调课申请`,
+      type: 'Transfer',
+    });
+  }
+});
+
 watch(
   () => preferences.app.watermark,
   async (enable) => {
@@ -65,6 +104,10 @@ watch(
     immediate: true,
   },
 );
+
+onBeforeUnmount(() => {
+  close();
+});
 </script>
 
 <template>
@@ -84,6 +127,7 @@ watch(
         :notifications="notifications"
         @clear="handleNoticeClear"
         @make-all="handleMakeAll"
+        @read="handleRead"
       />
     </template>
     <template #extra>

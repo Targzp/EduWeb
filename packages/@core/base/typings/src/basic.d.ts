@@ -7,7 +7,7 @@ type SelectOption = BasicOption;
 
 type TabOption = BasicOption;
 
-type RoleId = 0 | 1;
+type RoleId = 1 | 2;
 
 interface BasicUserInfo {
   /**

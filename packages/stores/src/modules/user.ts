@@ -49,9 +49,12 @@ export const useUserStore = defineStore('core-user', {
     setUserInfo(userInfo: BasicUserInfo | null) {
       // 设置用户信息
       this.userInfo = userInfo;
+      if (this.userInfo) {
+        this.userInfo.role = this.userInfo.roleId === 1 ? 'super' : 'admin';
+      }
       // 设置角色信息
-      const role = userInfo?.role ?? '';
-      this.setUserRoles(role);
+      const role = userInfo?.roleId ?? '';
+      this.setUserRoles(role === 1 ? 'super' : 'admin');
     },
     setUserRoles(role: string) {
       this.userRole = role;

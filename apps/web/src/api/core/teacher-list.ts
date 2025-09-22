@@ -18,6 +18,31 @@ export async function getTeacherListApi(paramsData: TeacherQueryParams) {
 }
 
 /**
+ * 获取全部教师列表
+ */
+export async function getAllTeacherListApi() {
+  return requestClient.get<TeacherItemInfo[]>('/teacher/getall');
+}
+
+/**
+ * 根据课程Id获取教师列表
+ */
+export async function getTeacherListByCourseApi(courseId: number) {
+  return requestClient.post<TeacherItemInfo[]>(
+    `/teacher/querybycourse?courseId=${courseId}`,
+  );
+}
+
+/**
+ * 获取教师所有待上排课的课程
+ */
+export async function getTeacherScheduledCourseApi(id: number) {
+  return requestClient.get<number[]>(
+    `/teacher/getteacherscheduledcourse?id=${id}`,
+  );
+}
+
+/**
  * 注册教师
  */
 export async function createTeacherApi(paramsData: TeacherItemCeParams) {

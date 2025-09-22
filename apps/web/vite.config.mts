@@ -16,8 +16,9 @@ export default defineConfig(async () => {
           '/api': {
             changeOrigin: true,
             rewrite: (path) => path.replace(/^\/api/, ''),
-            // mock代理目标地址
-            target: 'http://coursemanager.natapp1.cc/api',
+            // 代理目标地址
+            // target: 'http://coursemanager.natapp1.cc/api',
+            target: 'http://47.99.212.9:9001/api',
             ws: true,
           },
         },
