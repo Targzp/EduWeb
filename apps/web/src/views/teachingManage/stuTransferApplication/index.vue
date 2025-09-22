@@ -110,6 +110,12 @@ const formatApprovalStatus = (
   approvalStatus: ApprovalStatus,
   row: TransferApplicationItem,
 ) => {
+  if (
+    approvalStatus === ApprovalStatus.Pending &&
+    dayjs(row.originSchedule.startDate).isBefore(dayjs())
+  ) {
+    return '申请已过期';
+  }
   const statusLabel = approvalStatusList.find(
     (item) => item.value === approvalStatus,
   )!.label;
@@ -299,7 +305,10 @@ onMounted(() => {
           <template #default="{ row }">
             <template v-if="row.approvalStatus !== 2">
               <ElButton
-                v-if="row.approvalStatus === 0"
+                v-if="
+                  row.approvalStatus === 0 &&
+                  dayjs(row.originSchedule.startDate).isAfter(dayjs())
+                "
                 v-access:code="'APP-001'"
                 type="primary"
                 link

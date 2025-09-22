@@ -48,6 +48,7 @@ watch(dialogVisible, (val) => {
       stuName: applicationData.stuName,
       createDate: formatDate(applicationData.createDate),
       course: `${applicationData.originSchedule.courseName}/${applicationData.originSchedule.courseType}`,
+      teacherName: applicationData.originSchedule.teacherName,
       originDate: formatRangeTimeWithWeek(
         dayjs(applicationData.originSchedule.startDate).toDate(),
         dayjs(applicationData.originSchedule.endDate).toDate(),
@@ -181,6 +182,9 @@ const handleClose = () => {
         <ElDescriptionsItem label="申请课程" label-align="right">
           {{ transferApplicationApprovalData?.course ?? '--' }}
         </ElDescriptionsItem>
+        <ElDescriptionsItem label="教学老师" label-align="right">
+          {{ transferApplicationApprovalData?.teacherName ?? '--' }}
+        </ElDescriptionsItem>
         <ElDescriptionsItem label="原课程时间" label-align="right">
           {{ transferApplicationApprovalData?.originDate ?? '--' }}
         </ElDescriptionsItem>
@@ -188,7 +192,7 @@ const handleClose = () => {
           {{ transferApplicationApprovalData?.transferDate ?? '--' }}
         </ElDescriptionsItem>
         <ElDescriptionsItem label="申请理由" label-align="right">
-          {{ transferApplicationApprovalData?.approvalReason ?? '--' }}
+          {{ transferApplicationApprovalData?.approvalReason || '--' }}
         </ElDescriptionsItem>
       </ElDescriptions>
       <div class="my-4">

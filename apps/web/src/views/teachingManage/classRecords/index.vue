@@ -21,7 +21,7 @@ const segmentedOptions = [
 </script>
 
 <template>
-  <div class="flex h-full flex-col overflow-hidden p-4">
+  <div class="flex h-full flex-col p-4">
     <div class="flex">
       <div class="custom-segmented">
         <ElSegmented

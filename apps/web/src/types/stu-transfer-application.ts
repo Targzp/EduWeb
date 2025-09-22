@@ -13,6 +13,7 @@ interface ScheduleItem {
   startDate: string;
   endDate: string;
   createDate: string;
+  teacherName: string;
 }
 
 /**
@@ -49,6 +50,7 @@ interface TransferApplicationApprovalItem {
   stuName: string;
   createDate: string;
   course: string;
+  teacherName: string;
   originDate: string;
   transferDate: string;
   approvalReason: string;

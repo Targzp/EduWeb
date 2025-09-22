@@ -7,7 +7,6 @@ import {
   ElDescriptionsItem,
   ElDialog,
   ElMessage,
-  ElTooltip,
 } from 'element-plus';
 
 import { verifyRecordApi } from '#/api';
@@ -106,7 +105,7 @@ const handleClose = () => {
             <span v-if="item.isCheckIn">
               {{ `${item.studentName} ` }}
             </span>
-            <ElTooltip
+            <!-- <ElTooltip
               v-else-if="!item.isCheckIn && item.missCheckInReason"
               placement="top"
               :content="item.missCheckInReason"
@@ -114,7 +113,7 @@ const handleClose = () => {
               <span class="text-[hsl(var(--warning))]">{{
                 `${item.studentName} `
               }}</span>
-            </ElTooltip>
+            </ElTooltip> -->
             <span v-else class="text-[hsl(var(--destructive))]">
               {{ `${item.studentName} ` }}
             </span>
@@ -141,7 +140,7 @@ const handleClose = () => {
         </ElDescriptionsItem>
       </ElDescriptions>
       <div class="mt-4 text-[hsl(var(--info-foreground))]">
-        注：标黄学生可查看未到课原因，标红学生为旷课
+        注：标红学生为旷课
       </div>
     </div>
 

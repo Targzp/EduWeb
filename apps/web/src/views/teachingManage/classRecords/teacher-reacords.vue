@@ -127,146 +127,155 @@ onMounted(() => {
 </script>
 
 <template>
-  <div
-    class="mt-2 h-[56px] w-full rounded-[4px] bg-[hsl(var(--background))] p-2"
-  >
-    <ElForm :model="formData" class="mt-[4px]" inline>
-      <div class="flex w-full justify-between">
-        <div>
-          <ElFormItem class="!mb-0" prop="teacherId" label="教师姓名">
-            <ElSelect
-              v-model="formData.teacherId"
-              clearable
-              filterable
-              class="!w-[181px]"
-              placeholder="请选择教师姓名"
-            >
-              <ElOption
-                v-for="item in teacherList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-              />
-            </ElSelect>
-          </ElFormItem>
-          <ElFormItem class="!mb-0" prop="dateRange" label="日期时间范围">
-            <ElDatePicker
-              v-model="formData.dateRange"
-              class="!w-[300px]"
-              type="datetimerange"
-              value-format="YYYY-MM-DD HH:mm"
-              time-format="HH:mm"
-              range-separator="-"
-              start-placeholder="开始时间"
-              end-placeholder="结束时间"
-            />
-          </ElFormItem>
-          <ElFormItem class="!mb-0" prop="courseIds" label="课程名称">
-            <ElSelect
-              v-model="formData.courseIds"
-              class="!w-[250px]"
-              multiple
-              clearable
-              filterable
-              collapse-tags
-              collapse-tags-tooltip
-              placeholder="请选择课程"
-            >
-              <ElOption
-                v-for="item in courseList"
-                :key="item.id"
-                :label="`${item.name}/${item.type}`"
-                :value="item.id"
-              />
-            </ElSelect>
-          </ElFormItem>
-        </div>
-        <div>
-          <ElButton type="primary" plain @click="handleReset">重置</ElButton>
-          <ElButton type="primary" @click="handleSearch">查询</ElButton>
-        </div>
-      </div>
-    </ElForm>
-  </div>
-  <div
-    class="mt-2 flex h-full flex-1 flex-col rounded-[4px] bg-[hsl(var(--background))] p-4"
-  >
-    <ElTable
-      :data="tableData"
-      border
-      class="flex-1"
-      header-cell-class-name="tableHeader"
-      v-loading="tableLoading"
+  <div class="flex flex-1 flex-col">
+    <div
+      class="mt-2 h-[56px] w-full rounded-[4px] bg-[hsl(var(--background))] p-2"
     >
-      <ElTableColumn
-        type="index"
-        label="序号"
-        width="60"
-        align="center"
-        :index="tableIndexMethod"
-      />
-      <ElTableColumn prop="teacherName" label="教师" width="120" />
-      <ElTableColumn prop="startDate" label="日期">
-        <template #default="{ row }">
-          {{ formatDate(row.startDate, 'YYYY-MM-DD') }}
-        </template>
-      </ElTableColumn>
-      <ElTableColumn prop="startDate" label="时间段">
-        <template #default="{ row }">
-          {{ formatDate(row.startDate, 'HH:mm') }}-{{
-            formatDate(row.endDate, 'HH:mm')
-          }}
-        </template>
-      </ElTableColumn>
-      <ElTableColumn prop="courseName" label="课程">
-        <template #default="{ row }">
-          {{ `${row.courseName}/${row.courseType}` }}
-        </template>
-      </ElTableColumn>
-      <ElTableColumn prop="students" label="应到学生数" width="120">
-        <template #default="{ row }">
-          {{ row.students.length }}
-        </template>
-      </ElTableColumn>
-      <ElTableColumn prop="students" label="实到学生数" width="120">
-        <template #default="{ row }">
-          {{
-            row.students.filter((item: StudentCheckInfo) => item.isCheckIn)
-              .length
-          }}
-        </template>
-      </ElTableColumn>
-      <ElTableColumn prop="isVerified" label="是否已核对" width="100">
-        <template #default="{ row }">
-          <ElTag :type="row.isVerified ? 'success' : 'danger'">
-            {{ row.isVerified ? '是' : '否' }}
-          </ElTag>
-        </template>
-      </ElTableColumn>
-      <ElTableColumn prop="action" label="操作栏" align="center" width="120">
-        <template #default="{ row }">
-          <ElButton type="primary" link @click="handleViewDetail(row)">
-            查看详情
-          </ElButton>
-        </template>
-      </ElTableColumn>
-    </ElTable>
-    <div class="mt-4 flex justify-end">
-      <ElPagination
-        v-model:current-page="pageNo"
-        v-model:page-size="pageSize"
-        :page-sizes="pageSizes"
-        :total="total"
-        layout="total, sizes, prev, pager, next"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
+      <ElForm :model="formData" class="mt-[4px]" inline>
+        <div class="flex w-full justify-between">
+          <div>
+            <ElFormItem class="!mb-0" prop="teacherId" label="教师姓名">
+              <ElSelect
+                v-model="formData.teacherId"
+                clearable
+                filterable
+                class="!w-[181px]"
+                placeholder="请选择教师姓名"
+              >
+                <ElOption
+                  v-for="item in teacherList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </ElSelect>
+            </ElFormItem>
+            <ElFormItem class="!mb-0" prop="dateRange" label="日期时间范围">
+              <ElDatePicker
+                v-model="formData.dateRange"
+                class="!w-[300px]"
+                type="datetimerange"
+                value-format="YYYY-MM-DD HH:mm"
+                time-format="HH:mm"
+                range-separator="-"
+                start-placeholder="开始时间"
+                end-placeholder="结束时间"
+              />
+            </ElFormItem>
+            <ElFormItem class="!mb-0" prop="courseIds" label="课程名称">
+              <ElSelect
+                v-model="formData.courseIds"
+                class="!w-[250px]"
+                multiple
+                clearable
+                filterable
+                collapse-tags
+                collapse-tags-tooltip
+                placeholder="请选择课程"
+              >
+                <ElOption
+                  v-for="item in courseList"
+                  :key="item.id"
+                  :label="`${item.name}/${item.type}`"
+                  :value="item.id"
+                />
+              </ElSelect>
+            </ElFormItem>
+          </div>
+          <div>
+            <ElButton type="primary" plain @click="handleReset">重置</ElButton>
+            <ElButton type="primary" @click="handleSearch">查询</ElButton>
+          </div>
+        </div>
+      </ElForm>
+    </div>
+    <div
+      class="mt-2 flex flex-1 flex-col rounded-[4px] bg-[hsl(var(--background))] p-4"
+    >
+      <div class="custom-el-table">
+        <ElTable
+          :data="tableData"
+          border
+          class="!h-full"
+          header-cell-class-name="tableHeader"
+          v-loading="tableLoading"
+        >
+          <ElTableColumn
+            type="index"
+            label="序号"
+            width="60"
+            align="center"
+            :index="tableIndexMethod"
+          />
+          <ElTableColumn prop="teacherName" label="教师" width="120" />
+          <ElTableColumn prop="startDate" label="日期">
+            <template #default="{ row }">
+              {{ formatDate(row.startDate, 'YYYY-MM-DD') }}
+            </template>
+          </ElTableColumn>
+          <ElTableColumn prop="startDate" label="时间段">
+            <template #default="{ row }">
+              {{ formatDate(row.startDate, 'HH:mm') }}-{{
+                formatDate(row.endDate, 'HH:mm')
+              }}
+            </template>
+          </ElTableColumn>
+          <ElTableColumn prop="courseName" label="课程">
+            <template #default="{ row }">
+              {{ `${row.courseName}/${row.courseType}` }}
+            </template>
+          </ElTableColumn>
+          <ElTableColumn prop="students" label="应到学生数" width="120">
+            <template #default="{ row }">
+              {{ row.students.length }}
+            </template>
+          </ElTableColumn>
+          <ElTableColumn prop="students" label="实到学生数" width="120">
+            <template #default="{ row }">
+              {{
+                row.students.filter((item: StudentCheckInfo) => item.isCheckIn)
+                  .length
+              }}
+            </template>
+          </ElTableColumn>
+          <ElTableColumn prop="isVerified" label="是否已核对" width="100">
+            <template #default="{ row }">
+              <ElTag :type="row.isVerified ? 'success' : 'danger'">
+                {{ row.isVerified ? '是' : '否' }}
+              </ElTag>
+            </template>
+          </ElTableColumn>
+          <ElTableColumn
+            prop="action"
+            label="操作栏"
+            align="center"
+            width="120"
+          >
+            <template #default="{ row }">
+              <ElButton type="primary" link @click="handleViewDetail(row)">
+                查看详情
+              </ElButton>
+            </template>
+          </ElTableColumn>
+        </ElTable>
+      </div>
+      <div class="mt-4 flex justify-end">
+        <ElPagination
+          v-model:current-page="pageNo"
+          v-model:page-size="pageSize"
+          :page-sizes="pageSizes"
+          :total="total"
+          layout="total, sizes, prev, pager, next"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        />
+      </div>
+
+      <TeacherDetailDialog
+        v-model:visible="detailDialogVisible"
+        :teacher-record-data="detailDialogData"
+        @submit-success="getTableData"
       />
     </div>
-
-    <TeacherDetailDialog
-      v-model:visible="detailDialogVisible"
-      :teacher-record-data="detailDialogData"
-      @submit-success="getTableData"
-    />
   </div>
 </template>

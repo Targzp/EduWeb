@@ -1,3 +1,13 @@
+.custom-el-table {
+  position: relative;
+  flex: 1;
+  background-color: lightseagreen;
+
+  .el-table {
+    position: absolute;
+  }
+}
+
 .el-card {
   --el-card-border-radius: var(--radius) !important;
 }
